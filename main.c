@@ -111,6 +111,19 @@ void Render(Node *root) {
     printf("\n");
   }
 }
+int Find(Node *node, int number){
+    if (node == NULL)
+        return 0;
+
+    if (node->data == number)
+        return 1;
+    else if (node->data > number)
+        return Find(node->left, number);
+    else if (node->data < number)
+        return Find(node->right, number);
+    else
+        return 0;
+}
 
 void InsertDefaults(Node **root) { // Až moc pointerů na můj vkus
   *root = Insert(*root, 10);
@@ -127,10 +140,19 @@ int main() {
   // InsertDefaults(&root); // Pokud chcete tak si dejte default
   while (1/* Tohle asi radši změnim aby nebyla katastrofa */) {
     Render(root);
+    char op;
+    printf("\n\nSelect operation: ('f' = Find, 'a' = Add) ");
+    scanf(" %c", &op);
     int x;
-    printf("\n\nEnter number: ");
+    printf("Enter number: ");
     scanf("%d", &x);
-    root = Insert(root, x);
+
+    if (op == 'a')
+        root = Insert(root, x);
+    else if (op == 'f'){
+        int found = Find(root, x);
+        printf("Is the number in the tree? %s\n", (found == 1) ? "Yes" : "No");
+    }
   }
 
   return 0;
